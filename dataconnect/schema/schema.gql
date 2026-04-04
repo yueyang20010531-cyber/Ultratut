@@ -1,0 +1,52 @@
+type User @table {
+  displayName: String!
+  userType: String!
+  createdAt: Timestamp!
+  email: String
+  photoUrl: String
+  bio: String
+  # subjects: [Subject] # Not supported, refer to the description
+  # availability: [Availability] # Not supported, assuming availability will be a structured string or separate table
+}
+
+type Subject @table {
+  name: String!
+  description: String
+}
+
+type Session @table {
+  student: User!
+  tutor: User!
+  subject: Subject!
+  sessionDate: Date!
+  startTime: String!
+  endTime: String!
+  status: String!
+  notes: String
+}
+
+type Content @table {
+  tutor: User!
+  subject: Subject!
+  title: String!
+  contentType: String!
+  fileUrl: String!
+  createdAt: Timestamp!
+  description: String
+  thumbnailUrl: String
+}
+
+type Review @table {
+  student: User!
+  tutor: User!
+  session: Session!
+  rating: Int!
+  reviewText: String!
+  createdAt: Timestamp!
+}
+
+type ContentAccess @table(key: ["student", "content"]) {
+  student: User!
+  content: Content!
+  accessedAt: Timestamp!
+}

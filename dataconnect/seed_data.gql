@@ -1,0 +1,94 @@
+mutation CreateSeedData @transaction @auth(level: USER, insecureReason: "This operation is for seeding data and should only be run by authenticated users in a development context.") {
+  user_insertMany(data: [
+    {
+      id: "550e8400-e29b-41d4-a716-446655440000",
+      displayName: "Alice Smith",
+      userType: "student",
+      createdAt: "2023-01-01T10:00:00Z",
+      email: "alice@example.com",
+      bio: "Passionate about learning new subjects."
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440001",
+      displayName: "Bob Johnson",
+      userType: "tutor",
+      createdAt: "2023-01-01T10:05:00Z",
+      email: "bob@example.com",
+      bio: "Experienced in mathematics and science."
+    },
+    {
+      id: "550e8400-e29b-41d4-a716-446655440002",
+      displayName: "Charlie Brown",
+      userType: "student",
+      createdAt: "2023-01-01T10:10:00Z",
+      email: "charlie@example.com"
+    }
+  ])
+  subject_insertMany(data: [
+    {
+      id: "6a62c60f-1358-450f-90e6-a83d42168393",
+      name: "Mathematics",
+      description: "Fundamental concepts and applications of numbers, quantity, and space."
+    },
+    {
+      id: "7b73d710-1469-4610-91f7-b94e53279404",
+      name: "Physics",
+      description: "The study of matter and energy and their interactions."
+    }
+  ])
+  content_insertMany(data: [
+    {
+      id: "8c84e811-1570-4711-9208-c05f6438a515",
+      tutorId: "550e8400-e29b-41d4-a716-446655440001",
+      subjectId: "6a62c60f-1358-450f-90e6-a83d42168393",
+      title: "Introduction to Algebra",
+      contentType: "video",
+      fileUrl: "https://example.com/algebra_intro.mp4",
+      createdAt: "2023-01-02T11:00:00Z",
+      description: "A beginner's guide to algebraic concepts.",
+      thumbnailUrl: "https://example.com/algebra_thumb.jpg"
+    },
+    {
+      id: "9d95f912-1681-4812-9319-d16a7549b626",
+      tutorId: "550e8400-e29b-41d4-a716-446655440001",
+      subjectId: "7b73d710-1469-4610-91f7-b94e53279404",
+      title: "Newton's Laws of Motion",
+      contentType: "document",
+      fileUrl: "https://example.com/newton_laws.pdf",
+      createdAt: "2023-01-03T12:00:00Z",
+      description: "An in-depth look at Newton's three laws.",
+      thumbnailUrl: "https://example.com/newton_thumb.png"
+    }
+  ])
+  session_insertMany(data: [
+    {
+      id: "a0a1a2a3-b4b5-c6c7-d8d9-e0e1e2e3e4e5",
+      studentId: "550e8400-e29b-41d4-a716-446655440000",
+      tutorId: "550e8400-e29b-41d4-a716-446655440001",
+      subjectId: "6a62c60f-1358-450f-90e6-a83d42168393",
+      sessionDate: "2023-01-05",
+      startTime: "14:00",
+      endTime: "15:00",
+      status: "completed",
+      notes: "Covered basic equations and problem-solving."
+    }
+  ])
+  contentAccess_insertMany(data: [
+    {
+      studentId: "550e8400-e29b-41d4-a716-446655440000",
+      contentId: "8c84e811-1570-4711-9208-c05f6438a515",
+      accessedAt: "2023-01-04T09:30:00Z"
+    }
+  ])
+  review_insertMany(data: [
+    {
+      id: "f0f1f2f3-g4g5-h6h7-i8i9-j0j1j2j3j4j5",
+      studentId: "550e8400-e29b-41d4-a716-446655440000",
+      tutorId: "550e8400-e29b-41d4-a716-446655440001",
+      sessionId: "a0a1a2a3-b4b5-c6c7-d8d9-e0e1e2e3e4e5",
+      rating: 5,
+      reviewText: "Bob was an excellent tutor! Very clear explanations.",
+      createdAt: "2023-01-05T15:30:00Z"
+    }
+  ])
+}

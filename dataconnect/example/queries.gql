@@ -1,0 +1,7 @@
+query ListAllSubjects @auth(level: PUBLIC, insecureReason: "This operation is safe to expose to the public") {
+      subjects {
+        id
+        name
+        description
+      }
+    }
