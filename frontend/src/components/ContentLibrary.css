@@ -1,0 +1,280 @@
+.content-library {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.library-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid #667eea;
+  flex-wrap: wrap;
+  gap: 15px;
+}
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.breadcrumb-home {
+  background: #667eea;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background 0.3s;
+}
+
+.breadcrumb-home:hover:not(:disabled) {
+  background: #5568d3;
+}
+
+.breadcrumb-home:disabled {
+  background: #ccc;
+  cursor: not-allowed;
+}
+
+.breadcrumb-separator {
+  color: #666;
+  font-weight: bold;
+}
+
+.breadcrumb-part {
+  color: #667eea;
+  font-weight: 500;
+}
+
+.library-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.action-btn {
+  padding: 10px 16px;
+  border: 2px solid #667eea;
+  background: white;
+  color: #667eea;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: all 0.3s;
+}
+
+.action-btn:hover {
+  background: #667eea;
+  color: white;
+}
+
+.upload-btn {
+  border-color: #28a745;
+  color: #28a745;
+}
+
+.upload-btn:hover {
+  background: #28a745;
+  color: white;
+}
+
+.folder-btn {
+  border-color: #ffc107;
+  color: #ffc107;
+}
+
+.folder-btn:hover {
+  background: #ffc107;
+  color: white;
+}
+
+.upload-section, .new-folder-section {
+  background: #f8f9fa;
+  padding: 20px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+  border: 2px dashed #667eea;
+}
+
+.upload-section input[type="file"] {
+  margin-bottom: 10px;
+}
+
+.new-folder-section {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.new-folder-section input {
+  flex: 1;
+  padding: 8px 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.new-folder-section button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: 500;
+}
+
+.new-folder-section button:first-of-type {
+  background: #28a745;
+  color: white;
+}
+
+.new-folder-section button:last-of-type {
+  background: #6c757d;
+  color: white;
+}
+
+.files-list {
+  min-height: 200px;
+}
+
+.empty-state {
+  text-align: center;
+  padding: 60px 20px;
+  color: #666;
+}
+
+.empty-state p:first-child {
+  font-size: 3em;
+  margin-bottom: 10px;
+}
+
+.empty-state p:last-child {
+  font-size: 1.1em;
+}
+
+.files-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 15px;
+}
+
+.file-item {
+  background: white;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  transition: all 0.3s;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.file-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  transform: translateY(-2px);
+}
+
+.file-icon {
+  font-size: 2em;
+  min-width: 40px;
+  text-align: center;
+}
+
+.file-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.file-name {
+  font-weight: 500;
+  margin-bottom: 4px;
+  word-break: break-word;
+}
+
+.folder-link {
+  background: none;
+  border: none;
+  color: #667eea;
+  cursor: pointer;
+  font-weight: 500;
+  text-decoration: underline;
+  padding: 0;
+  font-size: inherit;
+}
+
+.folder-link:hover {
+  color: #5568d3;
+}
+
+.file-meta {
+  font-size: 0.85em;
+  color: #666;
+}
+
+.file-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.action-btn.download-btn {
+  border-color: #17a2b8;
+  color: #17a2b8;
+  padding: 6px 10px;
+  font-size: 0.9em;
+}
+
+.action-btn.download-btn:hover {
+  background: #17a2b8;
+  color: white;
+}
+
+.action-btn.delete-btn {
+  border-color: #dc3545;
+  color: #dc3545;
+  padding: 6px 10px;
+  font-size: 0.9em;
+}
+
+.action-btn.delete-btn:hover {
+  background: #dc3545;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .library-header {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .library-actions {
+    justify-content: center;
+  }
+
+  .files-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .file-item {
+    flex-direction: column;
+    text-align: center;
+    gap: 8px;
+  }
+
+  .file-actions {
+    justify-content: center;
+  }
+
+  .new-folder-section {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .new-folder-section input {
+    margin-bottom: 10px;
+  }
+}

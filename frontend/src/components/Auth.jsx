@@ -5,6 +5,7 @@ import {
   updateProfile
 } from 'firebase/auth'
 import { auth } from '../firebase'
+import { initializeUserProfile } from '../utils/userRoles'
 import './Auth.css'
 
 function Auth() {
@@ -26,8 +27,11 @@ function Auth() {
         if (displayName) {
           await updateProfile(userCredential.user, { displayName })
         }
+        // Initialize user profile with role
+        await initializeUserProfile(userCredential.user)
       } else {
         await signInWithEmailAndPassword(auth, email, password)
+        // Note: Profile should already exist from signup, no need to initialize
       }
     } catch (err) {
       setError(err.message)

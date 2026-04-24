@@ -25,6 +25,26 @@
   opacity: 0.9;
 }
 
+.admin-badge {
+  background: #dc3545;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
+.teacher-badge {
+  background: #28a745;
+  color: white;
+  padding: 2px 8px;
+  border-radius: 12px;
+  font-size: 0.8em;
+  font-weight: 600;
+  margin-left: 10px;
+}
+
 .logout-btn {
   background: rgba(255, 255, 255, 0.2);
   border: 2px solid white;

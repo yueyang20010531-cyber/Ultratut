@@ -1,10 +1,45 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { signOut } from 'firebase/auth'
 import { auth } from '../firebase'
+import ContentLibrary from './ContentLibrary'
+import AdminPanel from './AdminPanel'
+import CreateAssignment from './CreateAssignment'
+import AssignmentList from './AssignmentList'
+import { getUserProfile, ROLES } from '../utils/userRoles'
 import './Dashboard.css'
 
 function Dashboard({ user }) {
   const [activeTab, setActiveTab] = useState('overview')
+  const [userProfile, setUserProfile] = useState(undefined)
+  const [loading, setLoading] = useState(true)
+  const [assignmentRefreshKey, setAssignmentRefreshKey] = useState(0)
+
+  useEffect(() => {
+    if (user) {
+      loadUserProfile()
+    } else {
+      setUserProfile(null)
+      setLoading(false)
+    }
+  }, [user])
+
+  const loadUserProfile = async () => {
+    try {
+      setLoading(true)
+      console.log('=== DASHBOARD: Loading user profile ===')
+      console.log('User UID:', user.uid)
+      const profile = await getUserProfile(user.uid)
+      console.log('Profile loaded:', profile)
+      console.log('Profile role:', profile?.role)
+      setUserProfile(profile)
+      console.log('=== DASHBOARD: Profile loaded successfully ===')
+    } catch (error) {
+      console.error('Error loading user profile:', error)
+      console.error('Error details:', error.message)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleLogout = async () => {
     try {
@@ -14,12 +49,22 @@ function Dashboard({ user }) {
     }
   }
 
+  const isAdmin = userProfile?.role === ROLES.ADMIN
+  const isTeacher = userProfile?.role === ROLES.TEACHER
+  const hasAdminAccess = isAdmin || isTeacher
+
+  const profileLoading = loading && userProfile === undefined
+
   return (
     <div className="dashboard">
       <header className="dashboard-header">
         <div className="header-left">
-          <h1>Tutoring Platform</h1>
-          <p className="welcome">Welcome, {user?.displayName || user?.email}</p>
+          <h1>Ultimate Tutor</h1>
+          <p className="welcome">
+            Welcome, {user?.displayName || user?.email} 
+            {isAdmin && <span className="admin-badge">(Admin)</span>}
+            {isTeacher && <span className="teacher-badge">(Teacher)</span>}
+          </p>
         </div>
         <button className="logout-btn" onClick={handleLogout}>
           Logout
@@ -51,6 +96,14 @@ function Dashboard({ user }) {
         >
           💬 Messages
         </button>
+        {hasAdminAccess && (
+          <button 
+            className={`nav-btn ${activeTab === 'admin' ? 'active' : ''}`}
+            onClick={() => setActiveTab('admin')}
+          >
+            ⚙️ Admin Panel
+          </button>
+        )}
       </nav>
 
       <main className="dashboard-content">
@@ -79,23 +132,28 @@ function Dashboard({ user }) {
         )}
 
         {activeTab === 'content' && (
-          <div className="tab-content">
-            <h2>Content Library</h2>
-            <p>Browse and access learning materials (coming soon)</p>
-          </div>
+          <ContentLibrary user={user} />
         )}
 
         {activeTab === 'assignments' && (
-          <div className="tab-content">
-            <h2>Assignments</h2>
-            <p>Submit assignments for AI grading (coming soon)</p>
+          <div className="assignments-tab">
+            {(isAdmin || isTeacher) && (
+              <CreateAssignment
+                user={user}
+                onAssignmentCreated={() => setAssignmentRefreshKey(prev => prev + 1)}
+              />
+            )}
+            <AssignmentList user={user} refreshKey={assignmentRefreshKey} />
           </div>
         )}
 
-        {activeTab === 'messages' && (
+        {activeTab === 'admin' && hasAdminAccess && (
+          <AdminPanel user={user} />
+        )}
+        {activeTab === 'admin' && profileLoading && (
           <div className="tab-content">
-            <h2>Messages</h2>
-            <p>Chat with instructors and classmates (coming soon)</p>
+            <h2>Admin</h2>
+            <p>Loading permissions...</p>
           </div>
         )}
       </main>

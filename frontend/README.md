@@ -5,8 +5,10 @@ A modern React + Vite frontend for your AI-powered tutoring platform.
 ## Features
 
 - ✅ Firebase Authentication (Login/Signup)
-- ✅ Student Dashboard
-- ✅ Content Library
+- ✅ **Role-based Access Control** - Admin and Student accounts
+- ✅ Student Dashboard with personalized content
+- ✅ **Admin Panel** - User management, file oversight, analytics
+- ✅ **Content Library** - Upload, organize, and manage files in folders (role-based access)
 - ✅ Assignment Management
 - ✅ Direct Messaging
 - 🎨 Responsive Design
@@ -19,20 +21,9 @@ A modern React + Vite frontend for your AI-powered tutoring platform.
 npm install
 ```
 
-### 2. Configure Firebase
+### 2. Firebase Config
 
-Create a `.env.local` file in this directory:
-
-```env
-VITE_FIREBASE_API_KEY=your_api_key
-VITE_FIREBASE_AUTH_DOMAIN=your_project.firebaseapp.com
-VITE_FIREBASE_PROJECT_ID=your_project_id
-VITE_FIREBASE_STORAGE_BUCKET=your_project.appspot.com
-VITE_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-VITE_FIREBASE_APP_ID=your_app_id
-```
-
-Get these values from your Firebase Console → Project Settings.
+✅ **Already configured!** Your Firebase config is already set up in `src/firebase.js` using the values from your root `firebase.js`.
 
 ### 3. Run Locally
 
@@ -93,9 +84,13 @@ firebase deploy --only hosting
 frontend/
 ├── src/
 │   ├── components/
-│   │   ├── Auth.jsx          # Login/Signup
-│   │   ├── Dashboard.jsx     # Main dashboard
+│   │   ├── Auth.jsx          # Login/Signup with role initialization
+│   │   ├── Dashboard.jsx     # Main dashboard with role-based navigation
+│   │   ├── ContentLibrary.jsx # File upload/management with folders
+│   │   ├── AdminPanel.jsx    # Admin user/file management
 │   │   └── ...
+│   ├── utils/
+│   │   └── userRoles.js      # Role management utilities
 │   ├── firebase.js           # Firebase config
 │   ├── App.jsx               # Main component
 │   ├── main.jsx              # React entry point
@@ -108,11 +103,14 @@ frontend/
 ## Next Steps
 
 1. ✅ Frontend scaffolded
-2. ⬜ Connect to backend API
-3. ⬜ Add content library features
-4. ⬜ Integrate AI grading
-5. ⬜ Add real-time chat
-6. ⬜ Deploy to production
+2. ✅ Firebase Authentication working
+3. ✅ **Role-based access control implemented**
+4. ✅ **Admin panel with user/file management**
+5. ✅ **Content Library with admin oversight**
+6. ⬜ Add assignment submission and AI grading
+7. ⬜ Add real-time chat/messaging
+8. ⬜ Deploy to production
+9. ⬜ Add more admin analytics features
 
 ## Environment Variables
 
