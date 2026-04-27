@@ -5,6 +5,8 @@ import ContentLibrary from './ContentLibrary'
 import AdminPanel from './AdminPanel'
 import CreateAssignment from './CreateAssignment'
 import AssignmentList from './AssignmentList'
+import Messages from './Messages'
+import AIAssignmentGenerator from './AIAssignmentGenerator'
 import { getUserProfile, ROLES } from '../utils/userRoles'
 import './Dashboard.css'
 
@@ -13,6 +15,7 @@ function Dashboard({ user }) {
   const [userProfile, setUserProfile] = useState(undefined)
   const [loading, setLoading] = useState(true)
   const [assignmentRefreshKey, setAssignmentRefreshKey] = useState(0)
+  const [assignmentSubTab, setAssignmentSubTab] = useState('manual')
 
   useEffect(() => {
     if (user) {
@@ -138,13 +141,47 @@ function Dashboard({ user }) {
         {activeTab === 'assignments' && (
           <div className="assignments-tab">
             {(isAdmin || isTeacher) && (
-              <CreateAssignment
-                user={user}
-                onAssignmentCreated={() => setAssignmentRefreshKey(prev => prev + 1)}
-              />
+              <div className="assignment-tabs">
+                <div className="assignment-tab-buttons">
+                  <button
+                    className={`assignment-tab-btn ${assignmentSubTab === 'manual' ? 'active' : ''}`}
+                    onClick={() => setAssignmentSubTab('manual')}
+                  >
+                    ✏️ Manual Creation
+                  </button>
+                  <button
+                    className={`assignment-tab-btn ${assignmentSubTab === 'ai' ? 'active' : ''}`}
+                    onClick={() => setAssignmentSubTab('ai')}
+                  >
+                    🤖 AI Generator
+                  </button>
+                </div>
+
+                {assignmentSubTab === 'manual' && (
+                  <CreateAssignment
+                    user={user}
+                    onAssignmentCreated={() => setAssignmentRefreshKey(prev => prev + 1)}
+                  />
+                )}
+
+                {assignmentSubTab === 'ai' && (
+                  <AIAssignmentGenerator
+                    user={user}
+                    onAssignmentGenerated={(assignment) => {
+                      // Optionally switch to manual tab with pre-filled data
+                      setAssignmentSubTab('manual')
+                      // You could pass the generated content to the manual form here
+                    }}
+                  />
+                )}
+              </div>
             )}
             <AssignmentList user={user} refreshKey={assignmentRefreshKey} />
           </div>
+        )}
+
+        {activeTab === 'messages' && (
+          <Messages user={user} />
         )}
 
         {activeTab === 'admin' && hasAdminAccess && (

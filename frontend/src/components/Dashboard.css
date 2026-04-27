@@ -157,3 +157,45 @@
     font-size: 1.5em;
   }
 }
+
+/* Assignment Tabs */
+.assignment-tabs {
+  margin-bottom: 30px;
+}
+
+.assignment-tab-buttons {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 15px;
+}
+
+.assignment-tab-btn {
+  background: #2a2a2a;
+  color: #ccc;
+  border: 1px solid #444;
+  padding: 10px 20px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.3s;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.assignment-tab-btn:hover {
+  background: #333;
+  border-color: #555;
+}
+
+.assignment-tab-btn.active {
+  background: #667eea;
+  color: white;
+  border-color: #667eea;
+}
+
+.assignment-tab-btn.active:hover {
+  background: #5a67d8;
+}

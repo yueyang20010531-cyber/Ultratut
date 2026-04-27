@@ -46,6 +46,61 @@
   //     ]
   //   },
   // ]
-  "indexes": [],
+  "indexes": [
+    {
+      "collectionGroup": "messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "senderId",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "mode": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "recipientId",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "mode": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "messages",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "recipientId",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "read",
+          "mode": "ASCENDING"
+        },
+        {
+          "fieldPath": "createdAt",
+          "mode": "DESCENDING"
+        }
+      ]
+    },
+    {
+      "collectionGroup": "assignments",
+      "queryScope": "COLLECTION",
+      "fields": [
+        { "fieldPath": "studentId", "mode": "ASCENDING" },
+        { "fieldPath": "dueDate", "mode": "ASCENDING" }
+      ]
+    }
+  ],
   "fieldOverrides": []
 }
