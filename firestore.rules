@@ -39,15 +39,15 @@ service cloud.firestore {
         (request.auth.uid == resource.data.studentId || isAdmin());
     }
 
-    // Messages collection - users can read/write messages they sent or received
+    // Messages collection - users can read/write messages they sent or received, admins can read all
     match /messages/{messageId} {
       allow read: if request.auth != null &&
-        (request.auth.uid == resource.data.senderId || request.auth.uid == resource.data.recipientId);
+        (request.auth.uid == resource.data.senderId || request.auth.uid == resource.data.recipientId || isAdmin());
       allow create: if request.auth != null && request.auth.uid == request.resource.data.senderId;
       allow update: if request.auth != null &&
-        (request.auth.uid == resource.data.senderId || request.auth.uid == resource.data.recipientId);
+        (request.auth.uid == resource.data.senderId || request.auth.uid == resource.data.recipientId || isAdmin());
       allow delete: if request.auth != null &&
-        (request.auth.uid == resource.data.senderId || request.auth.uid == resource.data.recipientId);
+        (request.auth.uid == resource.data.senderId || request.auth.uid == resource.data.recipientId || isAdmin());
     }
   }
 }

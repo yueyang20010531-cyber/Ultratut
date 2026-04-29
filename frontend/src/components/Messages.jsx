@@ -19,16 +19,33 @@ function Messages({ user }) {
   const [users, setUsers] = useState([])
   const [selectedMessage, setSelectedMessage] = useState(null)
   const [searchTerm, setSearchTerm] = useState('')
+  const [userProfile, setUserProfile] = useState(null)
+
+  // Load user profile on mount
+  useEffect(() => {
+    loadUserProfile()
+  }, [])
 
   // Load messages when tab changes
   useEffect(() => {
-    loadMessages()
-  }, [activeTab])
+    if (userProfile) {
+      loadMessages()
+    }
+  }, [activeTab, userProfile])
 
   // Load users when component mounts
   useEffect(() => {
     loadUsers()
   }, [])
+
+  const loadUserProfile = async () => {
+    try {
+      const profile = await getUserProfile(user.uid)
+      setUserProfile(profile)
+    } catch (error) {
+      console.error('Error loading user profile:', error)
+    }
+  }
 
   const loadMessages = async () => {
     try {
@@ -132,6 +149,9 @@ function Messages({ user }) {
     <div className="messages-container">
       <div className="messages-header">
         <h2>Messages</h2>
+        <div className="user-info" style={{ fontSize: '12px', color: '#666', marginBottom: '10px' }}>
+          Logged in as: {user.displayName || user.email} (ID: {user.uid})
+        </div>
         <button
           className="compose-btn"
           onClick={() => setShowCompose(true)}
@@ -159,6 +179,14 @@ function Messages({ user }) {
         >
           📋 All Messages
         </button>
+        {userProfile?.role === 'admin' && (
+          <button
+            className={`tab-btn admin-teacher ${activeTab === 'admin-teacher' ? 'active' : ''}`}
+            onClick={() => setActiveTab('admin-teacher')}
+          >
+            👨‍🏫 Teacher Messages
+          </button>
+        )}
       </div>
 
       <div className="messages-content">
@@ -183,13 +211,21 @@ function Messages({ user }) {
                   }}
                 >
                   <div className="message-header">
-                    <div className="message-sender">
-                      <strong>
-                        {message.senderId === user.uid ? 'To: ' : 'From: '}
-                        {message.senderId === user.uid ? message.recipientName : message.senderName}
-                      </strong>
-                      <span className="message-role">({message.senderRole})</span>
-                    </div>
+                    {activeTab === 'admin-teacher' ? (
+                      <div className="message-sender">
+                        <strong>From: {message.senderName} ({message.senderRole})</strong>
+                        <br />
+                        <strong>To: {message.recipientName || 'Unknown'}</strong>
+                      </div>
+                    ) : (
+                      <div className="message-sender">
+                        <strong>
+                          {message.senderId === user.uid ? 'To: ' : 'From: '}
+                          {message.senderId === user.uid ? message.recipientName : message.senderName}
+                        </strong>
+                        <span className="message-role">({message.senderRole})</span>
+                      </div>
+                    )}
                     <div className="message-date">
                       {formatDate(message.createdAt)}
                     </div>

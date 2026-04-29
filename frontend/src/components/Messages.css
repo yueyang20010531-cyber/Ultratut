@@ -48,10 +48,11 @@
   transition: all 0.3s;
 }
 
-.tab-btn.active {
-  background: #007bff;
-  color: white;
-  border-color: #007bff;
+.tab-btn.admin-teacher {
+  background: #fff3cd;
+  border-color: #ffc107;
+  color: #856404;
+  font-weight: bold;
 }
 
 .tab-btn:hover {

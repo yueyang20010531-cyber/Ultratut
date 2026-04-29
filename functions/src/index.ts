@@ -141,7 +141,7 @@ export const getMessages = onCall(async (data: any, context: any) => {
   }
 
   const userId = context.auth.uid;
-  let { type = 'all' } = data; // 'all', 'sent', 'received', 'inbox', 'unread'
+  let { type = 'all' } = data; // 'all', 'sent', 'received', 'inbox', 'unread', 'admin-teacher'
 
   // Map 'inbox' to 'received' for consistency
   if (type === 'inbox') {
@@ -167,6 +167,46 @@ export const getMessages = onCall(async (data: any, context: any) => {
         .where("recipientId", "==", userId)
         .where("read", "==", false)
         .get();
+    } else if (type === 'admin-teacher') {
+      // Admin view: get all messages involving teachers
+      // First, get all teacher user IDs
+      const teachersSnapshot = await admin.firestore().collection("users")
+        .where("role", "==", "teacher")
+        .get();
+
+      const teacherIds = teachersSnapshot.docs.map(doc => doc.id);
+
+      if (teacherIds.length === 0) {
+        return {
+          success: true,
+          messages: []
+        };
+      }
+
+      // Get messages where sender is teacher
+      const sentByTeachers = await admin.firestore().collection("messages")
+        .where("senderId", "in", teacherIds.slice(0, 10)) // Firestore 'in' limit is 10
+        .get();
+
+      // Get messages where recipient is teacher
+      const receivedByTeachers = await admin.firestore().collection("messages")
+        .where("recipientId", "in", teacherIds.slice(0, 10)) // Firestore 'in' limit is 10
+        .get();
+
+      // Combine and deduplicate messages
+      const allTeacherMessages = new Map();
+
+      [...sentByTeachers.docs, ...receivedByTeachers.docs].forEach(doc => {
+        const message = { id: doc.id, ...doc.data() };
+        allTeacherMessages.set(doc.id, message);
+      });
+
+      messagesSnapshot = {
+        docs: Array.from(allTeacherMessages.values()).map(msg => ({
+          id: msg.id,
+          data: () => msg
+        }))
+      };
     } else {
       // For 'all', get both sent and received messages
       const sentSnapshot = await admin.firestore().collection("messages")
